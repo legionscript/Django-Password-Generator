@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="{% static 'passgen/styles.css' %}">
+
+	<title>Password</title>
+</head>
+<body>
+	<div class="titleContainer">
+		<h1 class="title">Password Generator</h1>
+	</div>
+
+	<div class="card">
+		<form method="POST">
+			{% csrf_token %}
+
+			<p class="lengthRange"><span id="lengthRange"></span></p>
+			{% for field in form %}
+			<div class="inputContainer">
+				{{ field.errors }}
+				{{ field.label_tag }} {{ field }}
+			</div>
+			{% endfor %}
+
+			<button class="submitButton">Generate</button>
+		</form>
+	</div>
+
+	<script>
+		const slider = document.getElementById('lengthRangeInput')
+		let output = document.getElementById('lengthRange')
+		output.innerHTML = slider.value
+
+		output.style.color = '#90ee90'
+		slider.oninput = function() {
+			if (this.value <= 10) {
+				// red
+				output.style.color = '#FF0000'
+			} else if (this.value < 20) {
+				// orange
+				output.style.color = '#FFBF00'
+			} else {
+				output.style.color = '#90ee90'
+			}
+
+			output.innerHTML = this.value
+		}
+	</script>
+</body>
+</html>
